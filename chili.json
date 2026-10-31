@@ -1,0 +1,4 @@
+{
+  "_howto": "Add today's date (YYYY-MM-DD) to chiliDays when she makes chili. Remove it if it was a false alarm.",
+  "chiliDays": []
+}

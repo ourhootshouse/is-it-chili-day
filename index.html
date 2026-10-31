@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is it chili day?</title>
+<meta name="description" content="Is it chili day? A deeply important public service.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌶️</text></svg>">
+<style>
+  html,body{height:100%;margin:0}
+  body{display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#f4efe6;color:#111;text-align:center;overflow:hidden}
+  h1{font-size:clamp(96px,28vw,220px);margin:0;line-height:1;letter-spacing:-.04em}
+  #sub{font-size:clamp(16px,4vw,22px);opacity:.7;margin-top:18px;padding:0 20px}
+  html.yes body{background:radial-gradient(circle at 50% 40%,#ff7a1a,#b3160b 70%);color:#fff}
+  html.yes h1{text-shadow:0 6px 0 #6d0b04,0 0 40px rgba(255,200,0,.6);animation:wobble 1.2s ease-in-out infinite}
+  @keyframes wobble{0%,100%{transform:rotate(-3deg) scale(1)}50%{transform:rotate(3deg) scale(1.06)}}
+  .pepper{position:fixed;top:-60px;font-size:42px;animation:fall linear infinite;pointer-events:none}
+  @keyframes fall{to{transform:translateY(120vh) rotate(720deg)}}
+  footer{position:fixed;bottom:12px;font-size:12px;opacity:.5}
+  @media (prefers-reduced-motion:reduce){html.yes h1,.pepper{animation:none}.pepper{display:none}}
+</style>
+</head>
+<body>
+  <h1 id="is-it">…</h1>
+  <div id="sub"></div>
+  <footer>Satire. Not affiliated with any chili.</footer>
+<script>
+(function(){
+  var d=new Date(), key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  fetch('chili.json?v='+Date.now()).then(function(r){return r.json()}).then(function(j){
+    var days=j.chiliDays||[], yes=days.indexOf(key)>-1;
+    document.documentElement.className=yes?'yes':'no';
+    document.getElementById('is-it').textContent=yes?'YES':'no';
+    var past=days.filter(function(x){return x<key}).sort();
+    document.getElementById('sub').textContent=yes?'Grab a bowl. This is not a drill.':
+      (past.length?'Last chili day: '+new Date(past[past.length-1]+'T12:00').toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})+'. Stay strong.':'Stay strong.');
+    if(yes){for(var i=0;i<24;i++){var p=document.createElement('div');p.className='pepper';p.textContent=['🌶️','🫘','🔥'][i%3];
+      p.style.left=Math.random()*100+'vw';p.style.animationDuration=(3+Math.random()*4)+'s';p.style.animationDelay=(-Math.random()*6)+'s';document.body.appendChild(p);}}
+  }).catch(function(){document.getElementById('is-it').textContent='?';});
+})();
+</script>
+</body>
+</html>
